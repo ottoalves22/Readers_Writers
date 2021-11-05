@@ -5,11 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class LeitorTxt{
+public class BD{
+    String[] texto = new String[36242];
 
-    public String[] lerBd() throws IOException{
+    public void lerBd() throws IOException{
+        //armazena o texto no atributo texto
         FileReader nomeArquivo;
-        String[] texto = new String[36242];
 		for(int i = 1; i < 36243; i++){
 
             nomeArquivo = new FileReader("EP2/bd.txt");
@@ -22,8 +23,15 @@ public class LeitorTxt{
                 contador++;
             }
             buffer.close();
-
 		}
-        return texto;
-	}
+    }
+
+    public void acessosAleatoriosReader(){
+
+    }
+
+    public void acessosAleatoriosWriter(){
+
+    }
+
 }
