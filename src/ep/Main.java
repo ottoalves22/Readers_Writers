@@ -16,11 +16,26 @@ public class Main {
         leitor_txt.lerBd();
         int proporcao = 69;
         createThreads(proporcao);
-        for(Thread thread : threads){
-            System.out.print("gang");
-            thread.start();
-            //System.out.println(leitor_txt.texto[i]);
-        }
+
+            int media = 0;
+            long tempoInicial = System.currentTimeMillis();
+
+            //inicia a porra das threads
+            for(Thread thread : threads){
+                thread.start();
+            }
+
+            long tempoFinal = System.currentTimeMillis();
+
+            //manda as malditas threads esperarem
+            /*Segundo algum jao da alura; Quando a thread MAIN executa t1.join(),
+            ela vai aguardar até o t1 terminar. Em outras palavras,
+            com join() vc pode dizer para a
+            thread esperar a finalização da outra. */
+            for(Thread thread : threads){
+                thread.join();
+            }
+            media += tempoFinal - tempoInicial;
 
     }
 
@@ -46,12 +61,4 @@ public class Main {
         }
     }
 
-    //AQUI DA PRA MEXER MAIS, TA MUITO PARECIDO
-    public void joinThreads() throws InterruptedException{
-        int i = 0;
-        while(i<threads.length){
-            threads[i].join();
-            i++;
-        }
-    }
 }

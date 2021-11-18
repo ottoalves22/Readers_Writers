@@ -8,6 +8,16 @@ class ReaderWriter{
     static Semaphore writeLock = new Semaphore(1);
 
     static class Reader implements Runnable {
+        /* Precisa por o seguinte aqui no RUN
+        *   if(implementacao == 1) leitorEescritor();
+            else if(implementacao == 2)
+                try {
+                    naoLeitorEescritor();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+        * */
+
         @Override
         public void run() {
             try {
@@ -35,9 +45,21 @@ class ReaderWriter{
                 System.out.println(e.getMessage());
             }
         }
+
     }
 
     static class Writer implements Runnable {
+
+        /*
+        * Precisa por o seguinte no RUN segundo o EP do repositorio
+        *   if(implementacao == 1) leitorEescritor();
+            else if(implementacao == 2)
+                try {
+                    naoLeitorEescritor();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+        * */
         @Override
         public void run() {
             try {
