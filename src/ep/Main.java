@@ -13,30 +13,41 @@ public class Main {
 
     public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException  {
         BD leitor_txt = new BD();
-        leitor_txt.lerBd();
-        int proporcao = 69;
-        createThreads(proporcao);
+        int proporcao = 100;
 
             int media = 0;
-            long tempoInicial = System.currentTimeMillis();
 
-            //inicia a porra das threads
-            for(Thread thread : threads){
-                thread.start();
+            for(int i=0; i<=1; i++){
+                for(int j=0; j<proporcao; j++){
+                    for(int k=0; k<50; k++){
+                        if(i==0){ // implementacao um
+                            leitor_txt.lerBd();
+
+                            createThreads(j);
+
+                            long tempoInicial = System.currentTimeMillis();
+
+                            for(Thread thread : threads){
+                                thread.start();
+                            }
+                            long tempoFinal = System.currentTimeMillis();
+
+                            //manda as malditas threads esperarem
+                            /*Segundo algum jao da alura; Quando a thread MAIN executa t1.join(),
+                            ela vai aguardar até o t1 terminar. Em outras palavras,
+                            com join() vc pode dizer para a
+                            thread esperar a finalização da outra. */
+                            for(Thread thread : threads){
+                                thread.join();
+                            }
+
+                            media += tempoFinal - tempoInicial;
+                        } else { //implementacao dois
+                            System.out.println("Imp 2");
+                        }
+                    }
+                }
             }
-
-            long tempoFinal = System.currentTimeMillis();
-
-            //manda as malditas threads esperarem
-            /*Segundo algum jao da alura; Quando a thread MAIN executa t1.join(),
-            ela vai aguardar até o t1 terminar. Em outras palavras,
-            com join() vc pode dizer para a
-            thread esperar a finalização da outra. */
-            for(Thread thread : threads){
-                thread.join();
-            }
-            media += tempoFinal - tempoInicial;
-
     }
 
 
