@@ -14,8 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException  {
         BD leitor_txt = new BD();
         int proporcao = 100;
-
-            int media = 0;
+        int media = 0;
 
             for(int i=0; i<=1; i++){
                 for(int j=0; j<proporcao; j++){
@@ -23,23 +22,17 @@ public class Main {
                         if(i==0){ // implementacao um
                             leitor_txt.lerBd();
 
-                            createThreads(j);
+                            createThreads(j, leitor_txt);
 
                             long tempoInicial = System.currentTimeMillis();
 
                             for(Thread thread : threads){
                                 thread.start();
                             }
-                            long tempoFinal = System.currentTimeMillis();
-
-                            //manda as malditas threads esperarem
-                            /*Segundo algum jao da alura; Quando a thread MAIN executa t1.join(),
-                            ela vai aguardar até o t1 terminar. Em outras palavras,
-                            com join() vc pode dizer para a
-                            thread esperar a finalização da outra. */
                             for(Thread thread : threads){
                                 thread.join();
                             }
+                            long tempoFinal = System.currentTimeMillis();
 
                             media += tempoFinal - tempoInicial;
                         } else { //implementacao dois
@@ -51,21 +44,21 @@ public class Main {
     }
 
 
-    public static void createThreads(int proportion) throws FileNotFoundException {
+    public static void createThreads(int proportion, BD entry_db) throws FileNotFoundException {
         threads = new Thread[100];
         Random rand = new Random();
         int aux_rand;
         for(int i=0; i<proportion; i++){
             aux_rand = rand.nextInt(100);
             if(threads[aux_rand] == null){
-                threads[aux_rand] = new Thread(new Writer());
+                threads[aux_rand] = new Thread(new Writer(entry_db));
                 //System.out.print("Escreveu o Writer");
                 //System.out.println(aux_rand);
             }
         }
         for(int i=0; i<100; i++){ // preenche o coiso com os threads pra cada classe
             if(threads[i] == null){
-                threads[i] = new Thread(new Reader());
+                threads[i] = new Thread(new Reader(entry_db));
                 //System.out.print("Escreveu o Reader ");
                 //System.out.println(i);
             }

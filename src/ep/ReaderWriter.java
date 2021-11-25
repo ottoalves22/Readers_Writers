@@ -7,7 +7,14 @@ class ReaderWriter{
     static Semaphore readLock = new Semaphore(1);
     static Semaphore writeLock = new Semaphore(1);
 
+
     static class Reader implements Runnable {
+        int activeReaders = 0;
+        boolean hasWriter = false;
+        BD db;
+        public Reader(BD entry_db){
+            db = entry_db;
+        }
         /* Precisa por o seguinte aqui no RUN
         *   if(implementacao == 1) leitorEescritor();
             else if(implementacao == 2)
@@ -20,35 +27,43 @@ class ReaderWriter{
 
         @Override
         public void run() {
+            start_reading();
+            bdRandomAccess(db);
+            stop_reading();
+        }
+
+        synchronized public void start_reading(){ //SYNCRHONIZED???
+            while(!this.hasWriter){
+                try{
+                    wait();
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            this.activeReaders++;
+        }
+
+        synchronized public void stop_reading(){
+            activeReaders--;
+            notifyAll();
+        }
+
+        public void bdRandomAccess(BD bd){
+            bd.acessosAleatoriosReader();
             try {
-                //Acquire Section
-                readLock.acquire();
-                readCount++;
-                if (readCount == 1) {
-                    writeLock.acquire();
-                }
-                readLock.release();
-
-                //Reading section
-                System.out.println("Thread "+Thread.currentThread().getName() + " is READING");
-                Thread.sleep(1500);
-                System.out.println("Thread "+Thread.currentThread().getName() + " has FINISHED READING");
-
-                //Releasing section
-                readLock.acquire();
-                readCount--;
-                if(readCount == 0) {
-                    writeLock.release();
-                }
-                readLock.release();
+                Thread.sleep(1);
             } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
 
     }
 
     static class Writer implements Runnable {
+        BD db;
+        public Writer(BD entry_db){
+            db = entry_db;
+        }
 
         /*
         * Precisa por o seguinte no RUN segundo o EP do repositorio
