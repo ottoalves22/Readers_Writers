@@ -12,24 +12,41 @@ class ReaderWriter{
         int activeReaders = 0;
         boolean hasWriter = false;
         BD db;
-        public Reader(BD entry_db){
+        char implementacao;
+
+        public Reader(BD entry_db, char implementacao1){
             db = entry_db;
+            implementacao = implementacao1;
         }
-        /* Precisa por o seguinte aqui no RUN
-        *   if(implementacao == 1) leitorEescritor();
-            else if(implementacao == 2)
-                try {
-                    naoLeitorEescritor();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-        * */
 
         @Override
         public void run() {
-            start_reading();
-            bdRandomAccess(db);
-            stop_reading();
+            if(implementacao=='t'){
+                start_reading();
+
+                // acessos ao bd
+                db.acessosAleatoriosReader();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                stop_reading();
+                return;
+            } else {
+                //LOCK LOCKS
+
+                //acessos ao bd
+                db.acessosAleatoriosReader();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                //UNLOCK LOCKS
+            }
         }
 
         synchronized public void start_reading(){ //SYNCRHONIZED???
@@ -48,44 +65,29 @@ class ReaderWriter{
             notifyAll();
         }
 
-        public void bdRandomAccess(BD bd){
-            bd.acessosAleatoriosReader();
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
     }
 
     static class Writer implements Runnable {
         BD db;
-        public Writer(BD entry_db){
+        char implementacao;
+        public Writer(BD entry_db, char implementacao1){
             db = entry_db;
+            implementacao = implementacao1;
         }
 
-        /*
-        * Precisa por o seguinte no RUN segundo o EP do repositorio
-        *   if(implementacao == 1) leitorEescritor();
-            else if(implementacao == 2)
-                try {
-                    naoLeitorEescritor();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-        * */
         @Override
         public void run() {
-            try {
-                writeLock.acquire();
-                System.out.println("Thread "+Thread.currentThread().getName() + " is WRITING");
-                Thread.sleep(2500);
-                System.out.println("Thread "+Thread.currentThread().getName() + " has finished WRITING");
-                writeLock.release();
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
+            //if(implementacao=='t'){
+             //   start_writting();
+             //   return;
+            //} else {
+                //LOCK LOCKS
+
+                //acessos ao bd
+
+                //UNLOCK LOCKS
+           // }
         }
     }
 
