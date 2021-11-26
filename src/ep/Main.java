@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException  {
         BD leitor_txt = new BD();
-        int proporcao = 100;
+        int proporcao = 101;
         int media = 0;
         long tempoInicial = 0;
         long tempoFinal;
@@ -33,17 +33,17 @@ public class Main {
                         thread.start();
                     }
                     for (Thread thread : threads) {
-                        thread.join();
+                        thread.join(); // aqui ta foda
                     }
                     tempoFinal = System.currentTimeMillis();
                     media += tempoFinal - tempoInicial;
 
                 }
                 media /= proporcao;
-                System.out.println("Média - " + j + " escritores e " + (100 - j) + " leitores - " + media);
+                System.out.println("Média - escritores: " + j + " e leitores: " + (100 - j) + " - " + media);
             }
-            long fimPrograma = System.currentTimeMillis();
-            System.out.println("Demorou " + ((fimPrograma - tempoInicial) / 60000) + " min");
+            tempoFinal = System.currentTimeMillis();
+            System.out.println("A execução levou " + ((tempoFinal - tempoInicial) / 60000) + " minutos");
         }
     }
 

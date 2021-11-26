@@ -1,9 +1,28 @@
 package ep;
 
+
+
 class ReaderWriter{
+    private static int activeReaders = 0;
+    private static boolean hasWriter = false;
+
+    public static boolean getter_has_writer(){
+        return hasWriter;
+    }
+
+    public static void setter_has_writer(boolean entry){
+        hasWriter = entry;
+    }
+
+    public static int getter_activer_readers(){
+        return activeReaders;
+    }
+
+    public static void setter_active_readers(int entry){
+        activeReaders = entry;
+    }
+
     static class Reader implements Runnable {
-        int activeReaders = 0;
-        boolean hasWriter = false;
         BD db;
         char implementacao;
         Locker locker = new Locker();
@@ -15,10 +34,8 @@ class ReaderWriter{
 
         @Override
         public void run() {
-            //System.out.println("rodou reader");
             if(implementacao=='t'){
                 start_reading();
-
                 // acessos ao bd
                 db.acessosAleatoriosReader();
                 try {
@@ -28,6 +45,7 @@ class ReaderWriter{
                 }
 
                 stop_reading();
+
                 return;
             } else {
                 //LOCK LOCKS
@@ -38,6 +56,7 @@ class ReaderWriter{
                 }
 
                 //acessos ao bd
+
                 db.acessosAleatoriosReader();
                 try {
                     Thread.sleep(1);
@@ -46,23 +65,25 @@ class ReaderWriter{
                 }
 
                 locker.unlock();
+
                 //UNLOCK LOCKS
             }
         }
 
         synchronized public void start_reading(){ //SYNCRHONIZED???
-            while(!this.hasWriter){
+            while(getter_has_writer()){
                 try{
                     wait();
                 } catch(InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            this.activeReaders++;
+
+            setter_active_readers(getter_activer_readers()+1);
         }
 
         synchronized public void stop_reading(){
-            activeReaders--;
+            setter_active_readers(getter_activer_readers()-1);
             notifyAll();
         }
 
@@ -83,7 +104,6 @@ class ReaderWriter{
 
         @Override
         public void run() {
-            //System.out.println("rodou writer");
             if(implementacao=='t'){
                 start_writting();
 
@@ -95,9 +115,9 @@ class ReaderWriter{
                 }
 
                 stop_writting();
+
                 return;
             } else {
-                //LOCK LOCKS
                 try{
                     locker.lock();
                 } catch (InterruptedException e){
@@ -112,7 +132,6 @@ class ReaderWriter{
                 }
 
                 locker.unlock();
-                //UNLOCK LOCKS
             }
         }
 
@@ -124,11 +143,11 @@ class ReaderWriter{
                     e.printStackTrace();
                 }
             }
-            hasWriter = true;
+            setter_has_writer(true);
         }
 
         synchronized public void stop_writting(){
-            hasWriter = false;
+            setter_has_writer(false);
             notifyAll();
         }
     }
