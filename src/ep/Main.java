@@ -15,8 +15,11 @@ public class Main {
         BD leitor_txt = new BD();
         int proporcao = 100;
         int media = 0;
+        long tempoInicial = 0;
+        long tempoFinal;
 
         for(int i=0; i<2; i++) {
+            System.out.println("Implementação: " + (i+1));
             for (int j = 0; j < proporcao; j++) {
                 for (int k = 0; k < 50; k++) {
                     //implementacao um
@@ -25,18 +28,22 @@ public class Main {
                     if(i==0) c = 't'; //T de thread
                     else c = 'l'; // Lde lock
                     createThreads(j, leitor_txt, c);
-                    long tempoInicial = System.currentTimeMillis();
+                    tempoInicial = System.currentTimeMillis();
                     for (Thread thread : threads) {
                         thread.start();
                     }
                     for (Thread thread : threads) {
                         thread.join();
                     }
-                    long tempoFinal = System.currentTimeMillis();
+                    tempoFinal = System.currentTimeMillis();
                     media += tempoFinal - tempoInicial;
 
                 }
+                media /= proporcao;
+                System.out.println("Média - " + j + " escritores e " + (100 - j) + " leitores - " + media);
             }
+            long fimPrograma = System.currentTimeMillis();
+            System.out.println("Demorou " + ((fimPrograma - tempoInicial) / 60000) + " min");
         }
     }
 

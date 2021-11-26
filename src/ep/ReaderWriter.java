@@ -15,6 +15,7 @@ class ReaderWriter{
 
         @Override
         public void run() {
+            //System.out.println("rodou reader");
             if(implementacao=='t'){
                 start_reading();
 
@@ -82,6 +83,7 @@ class ReaderWriter{
 
         @Override
         public void run() {
+            //System.out.println("rodou writer");
             if(implementacao=='t'){
                 start_writting();
 
@@ -131,5 +133,3 @@ class ReaderWriter{
         }
     }
 }
-
-// VEIO DAQUI https://codereview.stackexchange.com/questions/127234/reader-writers-problem-using-semaphores-in-java
