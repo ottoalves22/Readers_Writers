@@ -35,6 +35,7 @@ class ReaderWriter{
         @Override
         public void run() {
             if(implementacao=='t'){
+                //System.out.println("COMECOU READER");
                 start_reading();
                 // acessos ao bd
                 db.acessosAleatoriosReader();
@@ -45,10 +46,14 @@ class ReaderWriter{
                 }
 
                 stop_reading();
+                //System.out.println("ACABOU READER");
+
 
                 return;
             } else {
                 //LOCK LOCKS
+                System.out.println("COMECOU READER 2");
+
                 try{
                     locker.lock();
                 } catch (InterruptedException e){
@@ -65,6 +70,8 @@ class ReaderWriter{
                 }
 
                 locker.unlock();
+                System.out.println("ACABOU READER 2");
+
 
                 //UNLOCK LOCKS
             }
@@ -105,6 +112,7 @@ class ReaderWriter{
         @Override
         public void run() {
             if(implementacao=='t'){
+                //System.out.println("COMECOU WRITER");
                 start_writting();
 
                 db.acessosAleatoriosWriter();
@@ -115,9 +123,11 @@ class ReaderWriter{
                 }
 
                 stop_writting();
-
+                //System.out.println("ACABOU WRITER");
                 return;
             } else {
+                System.out.println("COMECOU WRITER 2");
+
                 try{
                     locker.lock();
                 } catch (InterruptedException e){
@@ -132,11 +142,13 @@ class ReaderWriter{
                 }
 
                 locker.unlock();
+                System.out.println("TERMINOU WRITER 2");
+
             }
         }
 
         synchronized public void start_writting(){
-            while(activeReaders != 0 && hasWriter){
+            while(!(getter_activer_readers()==0 && !getter_has_writer())){
                 try {
                     wait();
                 } catch (InterruptedException e) {

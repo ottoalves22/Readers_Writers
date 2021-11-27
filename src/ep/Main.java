@@ -17,6 +17,7 @@ public class Main {
         int media = 0;
         long tempoInicial = 0;
         long tempoFinal;
+        int nada = 0;
 
         for(int i=0; i<2; i++) {
             System.out.println("Implementação: " + (i+1));
@@ -28,6 +29,7 @@ public class Main {
                     if(i==0) c = 't'; //T de thread
                     else c = 'l'; // Lde lock
                     createThreads(j, leitor_txt, c);
+
                     tempoInicial = System.currentTimeMillis();
                     for (Thread thread : threads) {
                         thread.start();
@@ -52,6 +54,7 @@ public class Main {
         threads = new Thread[100];
         Random rand = new Random();
         int aux_rand;
+
         for(int i=0; i<proportion; i++){
             aux_rand = rand.nextInt(100);
             if(threads[aux_rand] == null){
@@ -60,6 +63,7 @@ public class Main {
                 //System.out.println(aux_rand);
             }
         }
+
         for(int i=0; i<100; i++){ // preenche o coiso com os threads pra cada classe
             if(threads[i] == null){
                 threads[i] = new Thread(new Reader(entry_db, implementacao));
@@ -67,6 +71,7 @@ public class Main {
                 //System.out.println(i);
             }
         }
+
     }
 
 }
