@@ -17,7 +17,6 @@ public class Main {
         int media = 0;
         long tempoInicial = 0;
         long tempoFinal;
-        int nada = 0;
 
         for(int i=0; i<2; i++) {
             System.out.println("Implementação: " + (i+1));

@@ -52,7 +52,7 @@ class ReaderWriter{
                 return;
             } else {
                 //LOCK LOCKS
-                System.out.println("COMECOU READER 2");
+                //System.out.println("COMECOU READER 2");
 
                 try{
                     locker.lock();
@@ -70,7 +70,7 @@ class ReaderWriter{
                 }
 
                 locker.unlock();
-                System.out.println("ACABOU READER 2");
+                //System.out.println("ACABOU READER 2");
 
 
                 //UNLOCK LOCKS
@@ -126,7 +126,7 @@ class ReaderWriter{
                 //System.out.println("ACABOU WRITER");
                 return;
             } else {
-                System.out.println("COMECOU WRITER 2");
+                //System.out.println("COMECOU WRITER 2");
 
                 try{
                     locker.lock();
@@ -142,7 +142,7 @@ class ReaderWriter{
                 }
 
                 locker.unlock();
-                System.out.println("TERMINOU WRITER 2");
+                //System.out.println("TERMINOU WRITER 2");
 
             }
         }
