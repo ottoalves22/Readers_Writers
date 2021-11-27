@@ -3,8 +3,8 @@ package ep;
 
 
 class ReaderWriter{
-    private static int activeReaders = 0;
-    private static boolean hasWriter = false;
+    private static volatile int activeReaders = 0;
+    private static volatile boolean hasWriter = false;
 
     public static boolean getter_has_writer(){
         return hasWriter;
@@ -49,7 +49,6 @@ class ReaderWriter{
                 //System.out.println("ACABOU READER");
 
 
-                return;
             } else {
                 //LOCK LOCKS
                 //System.out.println("COMECOU READER 2");
@@ -78,7 +77,7 @@ class ReaderWriter{
         }
 
         synchronized public void start_reading(){ //SYNCRHONIZED???
-            while(getter_has_writer()){
+            while(!getter_has_writer()){
                 try{
                     wait();
                 } catch(InterruptedException e) {
@@ -90,8 +89,14 @@ class ReaderWriter{
         }
 
         synchronized public void stop_reading(){
+            System.out.println("STOP READER");
+
             setter_active_readers(getter_activer_readers()-1);
+            System.out.println("REMOVEU READER");
+
             notifyAll();
+            System.out.println("Notificou READER");
+
         }
 
 
@@ -118,13 +123,13 @@ class ReaderWriter{
                 db.acessosAleatoriosWriter();
                 try {
                     Thread.sleep(1);
+                    System.out.println("sleepou o writers");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
                 stop_writting();
                 //System.out.println("ACABOU WRITER");
-                return;
             } else {
                 //System.out.println("COMECOU WRITER 2");
 
@@ -159,8 +164,11 @@ class ReaderWriter{
         }
 
         synchronized public void stop_writting(){
+            System.out.println("STOP WRITINGF");
             setter_has_writer(false);
+            System.out.println("SETOU FALSE");
             notifyAll();
+            System.out.println("Notificou");
         }
     }
 }

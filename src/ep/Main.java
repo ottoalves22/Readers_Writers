@@ -30,18 +30,22 @@ public class Main {
                     createThreads(j, leitor_txt, c);
 
                     tempoInicial = System.currentTimeMillis();
-                    for (Thread thread : threads) {
-                        thread.start();
+                    for (int x = 0;x < threads.length; x++) {
+                        threads[x].start();
                     }
-                    for (Thread thread : threads) {
-                        thread.join(); // aqui ta foda
+                    for (int x = 0; x < threads.length; x++) {
+                        System.out.println(threads[x].getName());
+                        threads[x].join();
                     }
                     tempoFinal = System.currentTimeMillis();
                     media += tempoFinal - tempoInicial;
-
+                    System.out.println(media);
                 }
                 media /= proporcao;
+                System.out.println("\n\n\n");
                 System.out.println("Média - escritores: " + j + " e leitores: " + (100 - j) + " - " + media);
+                System.out.println("\n\n\n");
+
             }
             tempoFinal = System.currentTimeMillis();
             System.out.println("A execução levou " + ((tempoFinal - tempoInicial) / 60000) + " minutos");

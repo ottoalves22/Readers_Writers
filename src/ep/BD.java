@@ -37,7 +37,9 @@ public class BD{
     public void acessosAleatoriosWriter(){
         Random rand = new Random();
         for(int i=0; i<100; i++){
-            this.texto[rand.nextInt(36242)] = "MODIFICADO";
+            int aux = rand.nextInt(36242);
+            this.texto[aux] = "MODIFICADO";
+            System.out.println(aux);
         }
     }
 
