@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException  {
         BD leitor_txt = new BD();
-        int proporcao = 101;
+        int proporcao = 100;
         int media = 0;
         long tempoInicial = 0;
         long tempoFinal;
