@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class BD{
     String[] texto = new String[36242];
+    String[] backup = new String[36242];
 
     public void lerBd() throws IOException{
         //armazena o texto no atributo texto
@@ -21,6 +22,7 @@ public class BD{
             String aux;
             while ((aux = buffer.readLine()) != null) {
                 texto[contador] = aux;
+                backup[contador] = aux;
                 contador++;
             }
             buffer.close();
@@ -30,7 +32,9 @@ public class BD{
     public void acessosAleatoriosReader(){
         Random rand = new Random();
         for(int i=0; i<100; i++){
-            String read_line = this.texto[rand.nextInt(36242)];
+            int aux = rand.nextInt(36242);
+            String read_line = this.texto[aux];
+            //System.out.println(aux);
         }
     }
 
@@ -39,8 +43,11 @@ public class BD{
         for(int i=0; i<100; i++){
             int aux = rand.nextInt(36242);
             this.texto[aux] = "MODIFICADO";
-            System.out.println(aux);
+            //System.out.println(aux);
         }
     }
 
+    public void resetText() {
+        this.texto = backup;
+    }
 }
