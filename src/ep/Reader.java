@@ -54,7 +54,7 @@ public class Reader extends contexto implements Runnable {
         }
     }
 
-    synchronized public void start_reading(){ //SYNCRHONIZED???
+    synchronized public void start_reading(){
         while(getter_has_writer()){
             try{
                 wait();

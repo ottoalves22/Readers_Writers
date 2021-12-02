@@ -1,14 +1,12 @@
 package ep;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
 public class Main {
     static Thread[] threads;
 
-
-    public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException  {
+    public static void main(String[] args) throws IOException, InterruptedException  {
         BD leitor_txt = new BD();
         System.out.println("Lendo BD...");
         leitor_txt.lerBd();
@@ -16,9 +14,10 @@ public class Main {
         double media = 0;
         long tempoInicial = 0;
         long tempoFinal;
+        long tempoTotalExecucao = 0;
 
         for(int i=0; i<2; i++) {
-            System.out.println("Implementação: " + (i+1));
+            System.out.println("\nImplementação: " + (i+1));
             for (int j = 0; j < proporcao; j++) {
                 for (int k = 0; k < 50; k++) {
                     //implementacao um
@@ -29,28 +28,25 @@ public class Main {
                     createThreads(j, leitor_txt, c);
 
                     tempoInicial = System.currentTimeMillis();
-                    for (int x = 0;x < threads.length; x++) {
-                        threads[x].start();
+                    for (Thread value : threads) {
+                        value.start();
                     }
-                    for (int x = 0; x < threads.length; x++) {
-//                        System.out.println(threads[x].getName());
-                        threads[x].join();
+                    for (Thread thread : threads) {
+                        thread.join();
                     }
 
                     tempoFinal = System.currentTimeMillis();
                     media += tempoFinal - tempoInicial;
+                    tempoTotalExecucao += tempoFinal - tempoInicial;
                 }
                 media /= 50;
-//                System.out.println("Média - escritores: " + j + " e leitores: " + (100 - j) + " - " + media);
                 System.out.format("%.3f%n", media);
             }
-            tempoFinal = System.currentTimeMillis();
-            System.out.println("A execução levou " + ((tempoFinal - tempoInicial) / 60000) + " minutos");
+            System.out.println("Tempo Total de Execução: " + tempoTotalExecucao);
         }
     }
 
-
-    public static void createThreads(int proportion, BD entry_db, char implementacao) throws FileNotFoundException {
+    public static void createThreads(int proportion, BD entry_db, char implementacao) {
         threads = new Thread[100];
         Random rand = new Random();
         int aux_rand;
@@ -59,38 +55,25 @@ public class Main {
             aux_rand = rand.nextInt(100);
             if(threads[aux_rand] == null){
                 threads[aux_rand] = new Thread(new Writer(entry_db, implementacao));
-                //System.out.print("Escreveu o Writer");
-                //System.out.println(aux_rand);
             }
         }
 
         for(int i=0; i<100; i++){ // preenche o coiso com os threads pra cada classe
             if(threads[i] == null){
                 threads[i] = new Thread(new Reader(entry_db, implementacao));
-                //System.out.print("Escreveu o Reader ");
-                //System.out.println(i);
             }
         }
-        rand(threads, threads.length);
-
+        rand(threads, threads.length); // embaralha as threads
     }
 
-    static void rand(Thread array[], int a)
-    {
-        // Creating object for Random class
+    static void rand(Thread[] array, int a) {
         Random rd = new Random();
 
-        // Starting from the last element and swapping one by one.
         for (int i = a-1; i > 0; i--) {
-
-            // Pick a random index from 0 to i
             int j = rd.nextInt(i+1);
-
-            // Swap array[i] with the element at random index
             Thread temp = array[i];
             array[i] = array[j];
             array[j] = temp;
         }
     }
-
 }

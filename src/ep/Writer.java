@@ -19,7 +19,7 @@ public class Writer extends contexto implements Runnable {
             this.db.acessosAleatoriosWriter();
             try {
                 Thread.sleep(1);
-//                    System.out.println("sleepou o writers");
+//              System.out.println("sleepou o writers");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

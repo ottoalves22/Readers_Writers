@@ -1,7 +1,6 @@
 package ep;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
@@ -34,7 +33,6 @@ public class BD{
         for(int i=0; i<100; i++){
             int aux = rand.nextInt(36242);
             String read_line = this.texto[aux];
-            //System.out.println(aux);
         }
     }
 
@@ -43,7 +41,6 @@ public class BD{
         for(int i=0; i<100; i++){
             int aux = rand.nextInt(36242);
             this.texto[aux] = "MODIFICADO";
-            //System.out.println(aux);
         }
     }
 
